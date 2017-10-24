@@ -40,7 +40,6 @@ import org.apache.spark.sql.sources._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Row, SQLContext, SaveMode}
 import org.apache.spark.sql.execution.datasources.hbase.types.SHCDataTypeFactory
-import org.apache.spark.util.Utils
 
 /**
  * val people = sqlContext.read.format("hbase").load("people")
@@ -183,13 +182,6 @@ case class HBaseRelation(
     val job = Job.getInstance(hbaseConf)
     job.setOutputFormatClass(classOf[TableOutputFormat[String]])
 
-    // This is a workaround for SPARK-21549. After it is fixed, the snippet can be removed.
-    val jobConfig = job.getConfiguration
-    val tempDir = Utils.createTempDir()
-    if (jobConfig.get("mapreduce.output.fileoutputformat.outputdir") == null) {
-      jobConfig.set("mapreduce.output.fileoutputformat.outputdir", tempDir.getPath + "/outputDataset")
-    }
-
     var count = 0
     val rkFields = catalog.getRowKey
     val rkIdxedFields = rkFields.map{ case x =>
@@ -238,7 +230,7 @@ case class HBaseRelation(
     rdd.mapPartitions(iter => {
       SHCCredentialsManager.processShcToken(serializedToken)
       iter.map(convertToPut)
-    }).saveAsNewAPIHadoopDataset(jobConfig)
+    }).saveAsNewAPIHadoopDataset(job.getConfiguration)
   }
 
   def rows = catalog.row
