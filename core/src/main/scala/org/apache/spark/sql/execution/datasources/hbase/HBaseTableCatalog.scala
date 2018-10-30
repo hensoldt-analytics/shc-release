@@ -257,7 +257,7 @@ object HBaseTableCatalog {
    */
   def apply(parameters: Map[String, String]): HBaseTableCatalog = {
     val jString = parameters(tableCatalog)
-    val jObj = parse(jString).asInstanceOf[JObject]
+    val jObj = parse(jString, false, true).asInstanceOf[JObject]
     val map = jObj.values
     val tableMeta = map.get(table).get.asInstanceOf[Map[String, _]]
     val nSpace = tableMeta.get(nameSpace).getOrElse("default").asInstanceOf[String]
