@@ -24,12 +24,12 @@
   <parent>
     <groupId>com.hortonworks.shc</groupId>
     <artifactId>shc</artifactId>
-    <version>1.1.2-2.2-s_2.11-SNAPSHOT</version>
+    <version>1.1.0.3.1.0.159-1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>shc-examples</artifactId>
-  <version>1.1.2-2.2-s_2.11-SNAPSHOT</version>
+  <version>1.1.0.3.1.0.159-1</version>
   <packaging>jar</packaging>
   <name>HBase Spark Connector Project Examples</name>
 
